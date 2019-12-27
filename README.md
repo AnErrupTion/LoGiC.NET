@@ -7,6 +7,10 @@ LoGiC.NET is a free and open-source .NET obfuscator for folks that want to see h
 # After obfuscation
 <img src="https://i.imgur.com/YvFXBhz.png">
 
+# Dependencies
+dnlib v3.3.1 : Restore NuGet packages and it'll work.
+SharpConfigParser : https://mega.nz/#!c3BxUKoK!3Uvx6izl_Gv1hnGJOzeBSRs4EzcaIjCCOMA2SgKW5FM
+
 # Current Features
 - Renames types, methods, parameters, properties, fields and events.
 - Adds proxy calls.
