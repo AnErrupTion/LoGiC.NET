@@ -28,14 +28,14 @@ namespace LoGiC.NET.Protections
                         if (method.Body.Instructions[i].OpCode == OpCodes.Ldstr)
                         {
                             string operand = method.Body.Instructions[i].Operand.ToString();
-                            method.Body.Instructions[i].Operand = Convert.ToBase64String(Encoding.UTF8.GetBytes(operand));
+                            method.Body.Instructions[i].Operand = Convert.ToBase64String(Encoding.UTF32.GetBytes(operand));
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(strings));
                             ++Amount;
                         }
                 }
             }
 
-            Console.WriteLine($"Encrypted {Amount} strings.");
+            Console.WriteLine($"  Encrypted {Amount} strings.");
         }
 
         private static MethodDef CreateReturnMethodDef()
@@ -49,7 +49,7 @@ namespace LoGiC.NET.Protections
 
             newMethod.Body.Instructions.Add(OpCodes.Nop.ToInstruction());
             newMethod.Body.Instructions.Add(
-                OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Encoding).GetMethod("get_UTF8"))));
+                OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Encoding).GetMethod("get_UTF32"))));
             newMethod.Body.Instructions.Add(OpCodes.Ldarg_0.ToInstruction());
             newMethod.Body.Instructions.Add(
                 OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Convert).GetMethod("FromBase64String",

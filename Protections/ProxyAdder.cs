@@ -83,7 +83,7 @@ namespace LoGiC.NET.Protections
                 }
             }
 
-            Console.WriteLine($"Added {Amount} proxy calls.");
+            Console.WriteLine($"  Added {Amount} proxy calls.");
         }
     }
 }
