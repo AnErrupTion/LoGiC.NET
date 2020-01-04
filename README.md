@@ -20,4 +20,4 @@ SharpConfigParser : https://mega.nz/#!c3BxUKoK!3Uvx6izl_Gv1hnGJOzeBSRs4EzcaIjCCO
 
 # TODO
 - Add an Anti-Tamper.
-- Add an Anti-Dump and Anti-Debug.
+- Add an Anti-Emulation and Anti-Debug.
