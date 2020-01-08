@@ -17,6 +17,7 @@ SharpConfigParser : https://mega.nz/#!c3BxUKoK!3Uvx6izl_Gv1hnGJOzeBSRs4EzcaIjCCO
 - Encrypts strings.
 - Encodes ints.
 - Adds junk methods.
+- Prevents application tampering.
 
 # TODO
 - Add an Anti-Emulation and Anti-Debug.
