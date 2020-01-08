@@ -19,5 +19,4 @@ SharpConfigParser : https://mega.nz/#!c3BxUKoK!3Uvx6izl_Gv1hnGJOzeBSRs4EzcaIjCCO
 - Adds junk methods.
 
 # TODO
-- Add an Anti-Tamper.
 - Add an Anti-Emulation and Anti-Debug.
