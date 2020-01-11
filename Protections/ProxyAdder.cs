@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using LoGiC.NET.Utils;
 
 namespace LoGiC.NET.Protections
 {
-    public class ProxyAdder : Randomizer
+    public class ProxyAdder
     {
         /// <summary>
         /// The intensity of the proxy calls. The more the intensity is, the more proxy calls will be added!

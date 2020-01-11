@@ -26,15 +26,16 @@ namespace LoGiC.NET.Protections
                 if (type.IsGlobalModuleType) continue;
                 foreach (MethodDef _ in type.Methods.ToArray())
                 {
-                    MethodDef strings = CreateReturnMethodDef(GenerateRandomString(Next(700, 500)), Program.Module);
-                    MethodDef ints = CreateReturnMethodDef(Next(500, 100), Program.Module);
+                    MethodDef strings = CreateReturnMethodDef(GenerateRandomString(Next(70, 50)),
+                        Program.Module);
+                    MethodDef ints = CreateReturnMethodDef(Next(70, 50), Program.Module);
                     type.Methods.Add(strings);
                     ++Amount;
                     type.Methods.Add(ints);
                     ++Amount;
                 }
             }
-            Console.WriteLine($"Added {Amount} junk methods.");
+            Console.WriteLine($"  Added {Amount} junk methods.");
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ using LoGiC.NET.Utils;
 
 namespace LoGiC.NET.Protections
 {
-    public class AntiTamper
+    public class AntiTamper : Randomizer
     {
         // Thanks to the EOF Anti-Tamper project by Xenocode on GitHub!
 
@@ -29,6 +29,7 @@ namespace LoGiC.NET.Protections
             IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType,
                 Program.Module);
             MethodDef init = (MethodDef)members.Single(method => method.Name == "NoTampering");
+            init.Rename(GenerateRandomString(Next(70, 50)));
             Program.Module.GlobalType.FindOrCreateStaticConstructor().Body.Instructions.Insert(0,
                 Instruction.Create(OpCodes.Call, init));
 

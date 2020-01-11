@@ -27,15 +27,15 @@ namespace LoGiC.NET.Protections
             if (Program.DontRename) return;
 
             Program.Module.Mvid = Guid.NewGuid();
-            Program.Module.Name = GenerateRandomString(Next(700, 500));
-            Program.Module.EntryPoint.Name = GenerateRandomString(Next(700, 500));
+            Program.Module.Name = GenerateRandomString(Next(70, 50));
+            Program.Module.EntryPoint.Name = GenerateRandomString(Next(70, 50));
 
             foreach (TypeDef type in Program.Module.Types)
             {
                 if (CanRename(type) && !Program.FileExtension.Contains("dll") && !Program.ForceWinForms && !Program.Module.HasResources)
                 {
-                    type.Name = GenerateRandomString(Next(700, 500));
-                    type.Namespace = GenerateRandomString(Next(700, 500));
+                    type.Name = GenerateRandomString(Next(70, 50));
+                    type.Namespace = GenerateRandomString(Next(70, 50));
                     ++TypeAmount;
                 }
 
@@ -43,50 +43,42 @@ namespace LoGiC.NET.Protections
                 {
                     if (CanRename(m) && !Program.ForceWinForms && !Program.FileExtension.Contains("dll"))
                     {
-                        m.Name = GenerateRandomString(Next(700, 500));
+                        m.Name = GenerateRandomString(Next(70, 50));
                         ++MethodAmount;
                     }
 
                     foreach (Parameter para in m.Parameters)
-                    {
                         if (CanRename(para))
                         {
-                            para.Name = GenerateRandomString(Next(700, 500));
+                            para.Name = GenerateRandomString(Next(70, 50));
                             ++ParameterAmount;
                         }
-                    }
                 }
 
                 foreach (PropertyDef p in type.Properties)
-                {
                     if (CanRename(p))
                     {
-                        p.Name = GenerateRandomString(Next(700, 500));
+                        p.Name = GenerateRandomString(Next(70, 50));
                         ++PropertyAmount;
                     }
-                }
 
                 foreach (FieldDef field in type.Fields)
-                {
                     if (CanRename(field))
                     {
-                        field.Name = GenerateRandomString(Next(700, 500));
+                        field.Name = GenerateRandomString(Next(70, 50));
                         ++FieldAmount;
                     }
-                }
 
                 foreach (EventDef e in type.Events)
-                {
                     if (CanRename(e))
                     {
-                        e.Name = GenerateRandomString(Next(700, 500));
+                        e.Name = GenerateRandomString(Next(70, 50));
                         ++EventAmount;
                     }
-                }
             }
 
-            Console.WriteLine($"Renamed {TypeAmount} types.\nRenamed {MethodAmount} methods.\nRenamed {ParameterAmount} parameters.\n" +
-                $"Renamed {PropertyAmount} properties.\nRenamed {FieldAmount} fields.\nRenamed {EventAmount} events.");
+            Console.WriteLine($"  Renamed {TypeAmount} types.\n  Renamed {MethodAmount} methods.\n  Renamed {ParameterAmount} parameters." +
+                $"\n  Renamed {PropertyAmount} properties.\n  Renamed {FieldAmount} fields.\n  Renamed {EventAmount} events.");
         }
 
         /// <summary>
@@ -97,18 +89,12 @@ namespace LoGiC.NET.Protections
 		public static bool CanRename(object obj)
         {
             DefAnalyzer analyze = null;
-            if (obj is TypeDef)
-                analyze = new TypeDefAnalyzer();
-            else if (obj is MethodDef)
-                analyze = new MethodDefAnalyzer();
-            else if (obj is EventDef)
-                analyze = new EventDefAnalyzer();
-            else if (obj is FieldDef)
-                analyze = new FieldDefAnalyzer();
-            else if (obj is Parameter)
-                analyze = new ParameterAnalyzer();
-            if (analyze == null)
-                return false;
+            if (obj is TypeDef) analyze = new TypeDefAnalyzer();
+            else if (obj is MethodDef) analyze = new MethodDefAnalyzer();
+            else if (obj is EventDef) analyze = new EventDefAnalyzer();
+            else if (obj is FieldDef) analyze = new FieldDefAnalyzer();
+            else if (obj is Parameter) analyze = new ParameterAnalyzer();
+            if (analyze == null) return false;
             return analyze.Execute(obj);
         }
     }

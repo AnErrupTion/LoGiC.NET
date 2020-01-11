@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using LoGiC.NET.Utils;
@@ -40,7 +37,7 @@ namespace LoGiC.NET.Protections
 
         private static MethodDef CreateReturnMethodDef()
         {
-            MethodDef newMethod = new MethodDefUser(GenerateRandomString(Next(700, 500)),
+            MethodDef newMethod = new MethodDefUser(GenerateRandomString(Next(70, 50)),
                     MethodSig.CreateStatic(Program.Module.CorLibTypes.String, Program.Module.CorLibTypes.String),
                     MethodImplAttributes.IL | MethodImplAttributes.Managed,
                     MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig
