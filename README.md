@@ -1,5 +1,5 @@
 # Introduction
-LoGiC.NET is a free and open-source .NET obfuscator for folks that want to see how obfuscation works with more complex obfuscations than Goldfuscator for example.
+LoGiC.NET is a free and open-source .NET obfuscator that uses dnlib for folks that want to see how obfuscation works with more complex obfuscations than Goldfuscator for example.
 
 # Before obfuscation
 <img src="https://i.imgur.com/0J5ZDq0.png">
