@@ -14,6 +14,7 @@ namespace LoGiC.NET.Utils
         {
             to.Attributes = from.Attributes;
             if (from.IsHideBySig) to.IsHideBySig = true;
+            if (from.IsStatic) to.IsStatic = true;
             return to;
         }
 
@@ -24,7 +25,7 @@ namespace LoGiC.NET.Utils
             MethodDefUser newMethodDef = new MethodDefUser
             {
                 Signature = ctx.Importer.Import(originMethod.Signature),
-                Name = Randomizer.GenerateRandomString(Randomizer.Next(700, 500))
+                Name = Randomizer.GenerateRandomString(Randomizer.Next(70, 50))
             };
             newMethodDef.Parameters.UpdateParameterTypes();
 

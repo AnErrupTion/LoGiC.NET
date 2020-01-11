@@ -40,38 +40,5 @@ namespace LoGiC.NET.Utils
         /// </summary>
         /// <value>The importer.</value>
         public Importer Importer { get; }
-
-        /// <summary>
-        /// Resolves a choosed TypeDef from the Map.
-        /// </summary>
-        /// <param name="typeDef">The TypeDef that will be searched.</param>
-        /// <returns>A TypeDef from the Map or null if it cannot find it.</returns>
-        public TypeDef Resolve(TypeDef typeDef)
-        {
-            if (Map.ContainsKey(typeDef)) return (TypeDef)Map[typeDef];
-            return null;
-        }
-
-        /// <summary>
-        /// Resolves a choosed MethodDef from the Map.
-        /// </summary>
-        /// <param name="methodDef">The MethodDef that will be searched.</param>
-        /// <returns>A MethodDef from the Map or null if it cannot find it.</returns>
-        public MethodDef Resolve(MethodDef methodDef)
-        {
-            if (Map.ContainsKey(methodDef)) return (MethodDef)Map[methodDef];
-            return null;
-        }
-
-        /// <summary>
-        /// Resolves a choosed FieldDef from the Map.
-        /// </summary>
-        /// <param name="fieldDef">The FieldDef that will be searched.</param>
-        /// <returns>A FieldDef from the Map or null if it cannot find it.</returns>
-        public FieldDef Resolve(FieldDef fieldDef)
-        {
-            if (Map.ContainsKey(fieldDef)) return (FieldDef)Map[fieldDef];
-            return null;
-        }
     }
 }

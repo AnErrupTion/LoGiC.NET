@@ -9,8 +9,8 @@ namespace LoGiC.NET.Utils
     /// </summary>
     public class Randomizer
     {
-        private static readonly RNGCryptoServiceProvider csp = new RNGCryptoServiceProvider();
-        private static readonly char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
+        private static readonly RandomNumberGenerator csp = RandomNumberGenerator.Create();
+        private static readonly char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 !:;,ù^$*&é\"'(-è_çà)=?./§%¨£µ1234567890°+".ToCharArray();
 
         public static int Next(int maxValue, int minValue = 0)
         {
@@ -33,7 +33,7 @@ namespace LoGiC.NET.Utils
 
         private static uint RandomUInt()
         {
-            var randomBytes = RandomBytes(sizeof(uint));
+            byte[] randomBytes = RandomBytes(sizeof(uint));
             return BitConverter.ToUInt32(randomBytes, 0);
         }
 
