@@ -5,7 +5,7 @@ LoGiC.NET is a free and open-source .NET obfuscator that uses dnlib for folks th
 <img src="https://i.imgur.com/0J5ZDq0.png">
 
 # After obfuscation
-<img src="https://i.imgur.com/olw1VVz.png">
+<img src="https://i.imgur.com/W68kj01.png">
 
 # Dependencies
 dnlib v3.3.1 : Restore NuGet packages and it'll work.<br/>
