@@ -30,23 +30,13 @@ namespace LoGiC.NET.Protections
                     for (int i = 0; i < method.Body.Instructions.Count; i++)
                         if (method.Body.Instructions[i].IsLdcI4())
                         {
+                            // The Absolute method.
                             int operand = method.Body.Instructions[i].GetLdcI4Value();
                             if (operand <= 0) continue;
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
                                 Program.Module.Import(typeof(Math).GetMethod("Abs", new Type[] { typeof(int) }))));
-                            ++Amount;
-                        }
-                }
 
-            foreach (TypeDef type in Program.Module.Types)
-                foreach (MethodDef method in type.Methods)
-                {
-                    if (!method.HasBody) continue;
-                    for (int i = 0; i < method.Body.Instructions.Count; i++)
-                        if (method.Body.Instructions[i].IsLdcI4())
-                        {
-                            int operand = method.Body.Instructions[i].GetLdcI4Value();
-                            if (operand <= 0) continue;
+                            // The String Length method.
                             method.Body.Instructions[i].OpCode = OpCodes.Ldstr;
                             method.Body.Instructions[i].Operand = GenerateRandomString(operand);
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
@@ -55,7 +45,7 @@ namespace LoGiC.NET.Protections
                         }
                 }
 
-            Console.WriteLine($"Encoded {Amount} ints.");
+            Console.WriteLine($"  Encoded {Amount} ints.");
         }
     }
 }

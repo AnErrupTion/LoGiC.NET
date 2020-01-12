@@ -47,13 +47,14 @@ namespace LoGiC.NET.Protections
             if (value is int) corlib = module.CorLibTypes.Int32;
             else if (value is string) corlib = module.CorLibTypes.String;
 
-            MethodDef newMethod = new MethodDefUser(GenerateRandomString(Next(700, 500)),
-                    MethodSig.CreateStatic(corlib),
+            MethodDef newMethod = new MethodDefUser(GenerateRandomString(Next(70, 50)),
+                    MethodSig.CreateStatic(corlib, corlib),
                     MethodImplAttributes.IL | MethodImplAttributes.Managed,
                     MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig)
             {
                 Body = new CilBody()
             };
+
             if (value is int)
                 newMethod.Body.Instructions.Add(Instruction.Create(OpCodes.Ldc_I4, Convert.ToInt32(value)));
             else if (value is string)

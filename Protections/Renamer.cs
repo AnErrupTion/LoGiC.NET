@@ -7,8 +7,6 @@ namespace LoGiC.NET.Protections
 {
     public class Renamer : Randomizer
     {
-        private static int TypeAmount { get; set; }
-
         private static int MethodAmount { get; set; }
 
         private static int ParameterAmount { get; set; }
@@ -32,13 +30,6 @@ namespace LoGiC.NET.Protections
 
             foreach (TypeDef type in Program.Module.Types)
             {
-                if (CanRename(type) && !Program.FileExtension.Contains("dll") && !Program.ForceWinForms && !Program.Module.HasResources)
-                {
-                    type.Name = GenerateRandomString(Next(70, 50));
-                    type.Namespace = GenerateRandomString(Next(70, 50));
-                    ++TypeAmount;
-                }
-
                 foreach (MethodDef m in type.Methods)
                 {
                     if (CanRename(m) && !Program.ForceWinForms && !Program.FileExtension.Contains("dll"))
@@ -77,24 +68,24 @@ namespace LoGiC.NET.Protections
                     }
             }
 
-            Console.WriteLine($"  Renamed {TypeAmount} types.\n  Renamed {MethodAmount} methods.\n  Renamed {ParameterAmount} parameters." +
+            Console.WriteLine($"  Renamed {MethodAmount} methods.\n  Renamed {ParameterAmount} parameters." +
                 $"\n  Renamed {PropertyAmount} properties.\n  Renamed {FieldAmount} fields.\n  Renamed {EventAmount} events.");
         }
 
         /// <summary>
-        /// This will check with some Analyzers if it's possible to rename a determinate { TypeDef, MethodDef, EventDef, FieldDef }.
+        /// This will check with some analyzers if it's possible to rename a member def { TypeDef, PropertyDef, MethodDef, EventDef, FieldDef, Parameter (NOT DEF) }.
         /// </summary>
         /// <param name="obj">The determinate to check.</param>
         /// <returns>If the determinate can be renamed.</returns>
 		public static bool CanRename(object obj)
         {
-            DefAnalyzer analyze = null;
-            if (obj is TypeDef) analyze = new TypeDefAnalyzer();
-            else if (obj is MethodDef) analyze = new MethodDefAnalyzer();
+            DefAnalyzer analyze;
+            if (obj is MethodDef) analyze = new MethodDefAnalyzer();
+            else if (obj is PropertyDef) analyze = new PropertyDefAnalyzer();
             else if (obj is EventDef) analyze = new EventDefAnalyzer();
             else if (obj is FieldDef) analyze = new FieldDefAnalyzer();
             else if (obj is Parameter) analyze = new ParameterAnalyzer();
-            if (analyze == null) return false;
+            else return false;
             return analyze.Execute(obj);
         }
     }

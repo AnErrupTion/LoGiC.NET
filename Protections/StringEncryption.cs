@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
@@ -12,8 +14,19 @@ namespace LoGiC.NET.Protections
 
         public static void Execute()
         {
-            MethodDef strings = CreateReturnMethodDef();
-            Program.Module.GlobalType.Methods.Add(strings);
+            ModuleDefMD typeModule = ModuleDefMD.Load(typeof(StringEncoder).Module);
+            TypeDef typeDef = typeModule.ResolveTypeDef(MDToken.ToRID(typeof(StringEncoder).MetadataToken));
+            IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType,
+                Program.Module);
+            MethodDef init = (MethodDef)members.Single(method => method.Name == "Decrypt");
+            init.Rename(GenerateRandomString(Next(70, 50)));
+
+            foreach (MethodDef method in Program.Module.GlobalType.Methods)
+                if (method.Name.Equals(".ctor"))
+                {
+                    Program.Module.GlobalType.Remove(method);
+                    break;
+                }
 
             foreach (TypeDef type in Program.Module.Types)
             {
@@ -25,8 +38,8 @@ namespace LoGiC.NET.Protections
                         if (method.Body.Instructions[i].OpCode == OpCodes.Ldstr)
                         {
                             string operand = method.Body.Instructions[i].Operand.ToString();
-                            method.Body.Instructions[i].Operand = Convert.ToBase64String(Encoding.UTF32.GetBytes(operand));
-                            method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(strings));
+                            method.Body.Instructions[i].Operand = Encrypt(operand);
+                            method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(init));
                             ++Amount;
                         }
                 }
@@ -35,27 +48,16 @@ namespace LoGiC.NET.Protections
             Console.WriteLine($"  Encrypted {Amount} strings.");
         }
 
-        private static MethodDef CreateReturnMethodDef()
+        private static string Encrypt(string str)
         {
-            MethodDef newMethod = new MethodDefUser(GenerateRandomString(Next(70, 50)),
-                    MethodSig.CreateStatic(Program.Module.CorLibTypes.String, Program.Module.CorLibTypes.String),
-                    MethodImplAttributes.IL | MethodImplAttributes.Managed,
-                    MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig
-                    | MethodAttributes.ReuseSlot)
-            { Body = new CilBody() };
+            str = Convert.ToBase64String(Encoding.UTF32.GetBytes(str));
+            char[] chars = "*$,;:!ù^*&é\"'(-è_çà)".ToCharArray();
 
-            newMethod.Body.Instructions.Add(OpCodes.Nop.ToInstruction());
-            newMethod.Body.Instructions.Add(
-                OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Encoding).GetMethod("get_UTF32"))));
-            newMethod.Body.Instructions.Add(OpCodes.Ldarg_0.ToInstruction());
-            newMethod.Body.Instructions.Add(
-                OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Convert).GetMethod("FromBase64String",
-                new Type[] { typeof(string) }))));
-            newMethod.Body.Instructions.Add(
-                OpCodes.Callvirt.ToInstruction(Program.Module.Import(typeof(Encoding).GetMethod("GetString",
-                new Type[] { typeof(byte[]) }))));
-            newMethod.Body.Instructions.Add(OpCodes.Ret.ToInstruction());
-            return newMethod;
+            for (int i = 0; i < 5; i++) /*<-- this is how many times you will add every character from the
+                array at a random position. 5 is just enough for what we want to do.*/
+                foreach (char c in chars) str = str.Insert(Next(str.Length, 1),
+                c.ToString());
+            return str;
         }
     }
 }
