@@ -29,7 +29,8 @@ namespace LoGiC.NET.Protections
             IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType,
                 Program.Module);
             MethodDef init = (MethodDef)members.Single(method => method.Name == "NoTampering");
-            init.Rename(GenerateRandomString(Next(70, 50)));
+            init.GetRenamed();
+
             Program.Module.GlobalType.FindOrCreateStaticConstructor().Body.Instructions.Insert(0,
                 Instruction.Create(OpCodes.Call, init));
 

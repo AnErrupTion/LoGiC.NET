@@ -26,9 +26,9 @@ namespace LoGiC.NET.Protections
                 if (type.IsGlobalModuleType) continue;
                 foreach (MethodDef _ in type.Methods.ToArray())
                 {
-                    MethodDef strings = CreateReturnMethodDef(GenerateRandomString(Next(70, 50)),
-                        Program.Module);
-                    MethodDef ints = CreateReturnMethodDef(Next(70, 50), Program.Module);
+                    MethodDef strings = CreateReturnMethodDef(GenerateRandomString(MemberRenamer
+                        .StringLength()), Program.Module);
+                    MethodDef ints = CreateReturnMethodDef(MemberRenamer.StringLength(), Program.Module);
                     type.Methods.Add(strings);
                     ++Amount;
                     type.Methods.Add(ints);
@@ -47,7 +47,7 @@ namespace LoGiC.NET.Protections
             if (value is int) corlib = module.CorLibTypes.Int32;
             else if (value is string) corlib = module.CorLibTypes.String;
 
-            MethodDef newMethod = new MethodDefUser(GenerateRandomString(Next(70, 50)),
+            MethodDef newMethod = new MethodDefUser(GenerateRandomString(MemberRenamer.StringLength()),
                     MethodSig.CreateStatic(corlib, corlib),
                     MethodImplAttributes.IL | MethodImplAttributes.Managed,
                     MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig)

@@ -25,8 +25,8 @@ namespace LoGiC.NET.Protections
             if (Program.DontRename) return;
 
             Program.Module.Mvid = Guid.NewGuid();
-            Program.Module.Name = GenerateRandomString(Next(70, 50));
-            Program.Module.EntryPoint.Name = GenerateRandomString(Next(70, 50));
+            Program.Module.Name = GenerateRandomString(MemberRenamer.StringLength());
+            Program.Module.EntryPoint.Name = GenerateRandomString(MemberRenamer.StringLength());
 
             foreach (TypeDef type in Program.Module.Types)
             {
@@ -34,14 +34,14 @@ namespace LoGiC.NET.Protections
                 {
                     if (CanRename(m) && !Program.ForceWinForms && !Program.FileExtension.Contains("dll"))
                     {
-                        m.Name = GenerateRandomString(Next(70, 50));
+                        m.Name = GenerateRandomString(MemberRenamer.StringLength());
                         ++MethodAmount;
                     }
 
                     foreach (Parameter para in m.Parameters)
                         if (CanRename(para))
                         {
-                            para.Name = GenerateRandomString(Next(70, 50));
+                            para.Name = GenerateRandomString(MemberRenamer.StringLength());
                             ++ParameterAmount;
                         }
                 }
@@ -49,21 +49,21 @@ namespace LoGiC.NET.Protections
                 foreach (PropertyDef p in type.Properties)
                     if (CanRename(p))
                     {
-                        p.Name = GenerateRandomString(Next(70, 50));
+                        p.Name = GenerateRandomString(MemberRenamer.StringLength());
                         ++PropertyAmount;
                     }
 
                 foreach (FieldDef field in type.Fields)
                     if (CanRename(field))
                     {
-                        field.Name = GenerateRandomString(Next(70, 50));
+                        field.Name = GenerateRandomString(MemberRenamer.StringLength());
                         ++FieldAmount;
                     }
 
                 foreach (EventDef e in type.Events)
                     if (CanRename(e))
                     {
-                        e.Name = GenerateRandomString(Next(70, 50));
+                        e.Name = GenerateRandomString(MemberRenamer.StringLength());
                         ++EventAmount;
                     }
             }

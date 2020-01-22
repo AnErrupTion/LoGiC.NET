@@ -14,12 +14,12 @@ namespace LoGiC.NET.Protections
 
         public static void Execute()
         {
-            ModuleDefMD typeModule = ModuleDefMD.Load(typeof(StringEncoder).Module);
-            TypeDef typeDef = typeModule.ResolveTypeDef(MDToken.ToRID(typeof(StringEncoder).MetadataToken));
+            ModuleDefMD typeModule = ModuleDefMD.Load(typeof(StringDecoder).Module);
+            TypeDef typeDef = typeModule.ResolveTypeDef(MDToken.ToRID(typeof(StringDecoder).MetadataToken));
             IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType,
                 Program.Module);
             MethodDef init = (MethodDef)members.Single(method => method.Name == "Decrypt");
-            init.Rename(GenerateRandomString(Next(70, 50)));
+            init.Rename(GenerateRandomString(MemberRenamer.StringLength()));
 
             foreach (MethodDef method in Program.Module.GlobalType.Methods)
                 if (method.Name.Equals(".ctor"))
@@ -50,13 +50,13 @@ namespace LoGiC.NET.Protections
 
         private static string Encrypt(string str)
         {
-            str = Convert.ToBase64String(Encoding.UTF32.GetBytes(str));
+            str = Convert.ToBase64String(Encoding.UTF32.GetBytes(str)); /*I'm using UTF32, but you can
+            also use UTF8 or Unicode for example for shorter encryption.*/
             char[] chars = "*$,;:!ù^*&é\"'(-è_çà)".ToCharArray();
 
             for (int i = 0; i < 5; i++) /*<-- this is how many times you will add every character from the
                 array at a random position. 5 is just enough for what we want to do.*/
-                foreach (char c in chars) str = str.Insert(Next(str.Length, 1),
-                c.ToString());
+                foreach (char c in chars) str = str.Insert(Next(str.Length), c.ToString());
             return str;
         }
     }

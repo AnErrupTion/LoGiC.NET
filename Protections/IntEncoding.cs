@@ -32,7 +32,7 @@ namespace LoGiC.NET.Protections
                         {
                             // The Absolute method.
                             int operand = method.Body.Instructions[i].GetLdcI4Value();
-                            if (operand <= 0) continue;
+                            if (operand <= 0) continue; // Prevents errors.
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
                                 Program.Module.Import(typeof(Math).GetMethod("Abs", new Type[] { typeof(int) }))));
 
@@ -41,6 +41,7 @@ namespace LoGiC.NET.Protections
                             method.Body.Instructions[i].Operand = GenerateRandomString(operand);
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
                                 Program.Module.Import(typeof(string).GetMethod("get_Length"))));
+
                             ++Amount;
                         }
                 }
