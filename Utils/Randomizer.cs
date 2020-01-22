@@ -25,22 +25,22 @@ namespace LoGiC.NET.Utils
         public static string GenerateRandomString(int size)
         {
             byte[] data = new byte[4 * size];
-            csp.GetBytes(data);
+            csp.GetNonZeroBytes(data);
             StringBuilder sb = new StringBuilder(size);
-            for (int i = 0; i < size; i++) sb.Append(chars[BitConverter.ToUInt32(data, i * 4) % chars.Length]);
+            for (int i = 0; i < size; i++) sb.Append(chars[BitConverter.ToUInt32(data, i * 4)
+                % chars.Length]);
             return sb.ToString();
         }
 
         private static uint RandomUInt()
         {
-            byte[] randomBytes = RandomBytes(sizeof(uint));
-            return BitConverter.ToUInt32(randomBytes, 0);
+            return BitConverter.ToUInt32(RandomBytes(sizeof(uint)), 0);
         }
 
         private static byte[] RandomBytes(int bytesNumber)
         {
             byte[] buffer = new byte[bytesNumber];
-            csp.GetBytes(buffer);
+            csp.GetNonZeroBytes(buffer);
             return buffer;
         }
     }

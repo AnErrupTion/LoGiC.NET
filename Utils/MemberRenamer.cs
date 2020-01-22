@@ -9,5 +9,15 @@ namespace LoGiC.NET.Utils
         {
             member.Name = name;
         }
+
+        public static void GetRenamed(this IMemberDef member)
+        {
+            member.Rename(Randomizer.GenerateRandomString(StringLength()));
+        }
+
+        public static int StringLength()
+        {
+            return Randomizer.Next(70, 50);
+        }
     }
 }
