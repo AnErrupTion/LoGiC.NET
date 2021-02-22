@@ -37,10 +37,11 @@ namespace LoGiC.NET.Protections
                                 Program.Module.Import(typeof(Math).GetMethod("Abs", new Type[] { typeof(int) }))));
 
                             // The String Length method.
-                            method.Body.Instructions[i].OpCode = OpCodes.Ldstr;
+                            // To fix
+                            /*method.Body.Instructions[i].OpCode = OpCodes.Ldstr;
                             method.Body.Instructions[i].Operand = GenerateRandomString(operand);
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
-                                Program.Module.Import(typeof(string).GetMethod("get_Length"))));
+                                Program.Module.Import(typeof(string).GetMethod("get_Length"))));*/
 
                             ++Amount;
                         }
