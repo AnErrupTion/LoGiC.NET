@@ -61,6 +61,7 @@
     <Compile Include="Protections\AntiTamper.cs" />
     <Compile Include="Protections\ControlFlow.cs" />
     <Compile Include="Protections\IntEncoding.cs" />
+    <Compile Include="Protections\InvalidMetadata.cs" />
     <Compile Include="Protections\JunkMethods.cs" />
     <Compile Include="Protections\ProxyAdder.cs" />
     <Compile Include="Protections\Renamer.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Utils\Analyzer\MethodDefAnalyzer.cs" />
     <Compile Include="Utils\Analyzer\ParameterAnalyzer.cs" />
     <Compile Include="Utils\Analyzer\PropertyDefAnalyzer.cs" />
+    <Compile Include="Utils\Decap.cs" />
     <Compile Include="Utils\InjectContext.cs" />
     <Compile Include="Utils\InjectHelper.cs" />
     <Compile Include="Utils\ProxyExtension.cs" />

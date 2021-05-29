@@ -45,9 +45,6 @@ namespace LoGiC.NET
             Console.WriteLine("Renaming...");
             Renamer.Execute();
 
-            Console.WriteLine("Adding junk methods...");
-            JunkMethods.Execute();
-
             Console.WriteLine("Adding proxy calls...");
             ProxyAdder.Execute();
 
@@ -57,6 +54,9 @@ namespace LoGiC.NET
             Console.WriteLine("Injecting Anti-Tamper...");
             AntiTamper.Execute();
 
+            Console.WriteLine("Adding junk methods...");
+            JunkMethods.Execute();
+
             Console.WriteLine("Executing Anti-De4dot...");
             AntiDe4dot.Execute();
 
@@ -65,6 +65,9 @@ namespace LoGiC.NET
 
             Console.WriteLine("Encoding ints...");
             IntEncoding.Execute();
+
+            Console.WriteLine("Adding invalid metadata...");
+            InvalidMetadata.Execute();
 
             Console.WriteLine("Watermarking...");
             Watermark.AddAttribute();
