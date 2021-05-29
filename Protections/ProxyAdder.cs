@@ -26,22 +26,24 @@ namespace LoGiC.NET.Protections
         public static void Execute()
         {
             for (int o = 0; o < Intensity; o++)
-            {
                 foreach (TypeDef t in Program.Module.Types)
                 {
-                    if (t.IsGlobalModuleType) continue;
+                    if (t.IsGlobalModuleType)
+                        continue;
+
                     foreach (MethodDef m in t.Methods.ToArray())
                     {
-                        if (!m.HasBody) continue;
+                        if (!m.HasBody)
+                            continue;
+
                         for (int z = 0; z < m.Body.Instructions.Count; z++)
-                        {
                             if (m.Body.Instructions[z].OpCode == OpCodes.Call)
                             {
                                 try
                                 {
                                     MethodDef targetMethod = m.Body.Instructions[z].Operand as MethodDef;
-                                    if (!targetMethod.FullName.Contains(Program.Module.Assembly.Name)) continue;
-                                    if (targetMethod.Parameters.Count == 0 || targetMethod.Parameters.Count > 4) continue;
+                                    if (!targetMethod.FullName.Contains(Program.Module.Assembly.Name) || targetMethod.Parameters.Count == 0 || targetMethod.Parameters.Count > 4)
+                                        continue;
 
                                     MethodDef newMeth = targetMethod.CopyMethod(Program.Module);
                                     targetMethod.DeclaringType.Methods.Add(newMeth);
@@ -49,8 +51,8 @@ namespace LoGiC.NET.Protections
 
                                     CilBody body = new CilBody();
                                     body.Instructions.Add(OpCodes.Nop.ToInstruction());
+
                                     for (int x = 0; x < targetMethod.Parameters.Count; x++)
-                                    {
                                         switch (x)
                                         {
                                             case 0:
@@ -66,7 +68,7 @@ namespace LoGiC.NET.Protections
                                                 body.Instructions.Add(OpCodes.Ldarg_3.ToInstruction());
                                                 break;
                                         }
-                                    }
+
                                     body.Instructions.Add(OpCodes.Call.ToInstruction(newMeth));
                                     body.Instructions.Add(OpCodes.Ret.ToInstruction());
 
@@ -75,10 +77,8 @@ namespace LoGiC.NET.Protections
                                 }
                                 catch { continue; }
                             }
-                        }
                     }
                 }
-            }
 
             Console.WriteLine($"  Added {Amount} proxy calls.");
         }

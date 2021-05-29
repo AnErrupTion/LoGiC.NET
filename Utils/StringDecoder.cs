@@ -5,12 +5,17 @@ namespace LoGiC.NET.Utils
 {
     public static class StringDecoder
     {
-        public static string Decrypt(string str)
+        public static string Decrypt(string str, int min, int key, int hash, int length, int max)
         {
-            char[] chars = "*$,;:!ù^*&é\"'(-è_çà)".ToCharArray();
-            foreach (char c in chars) str = str.Replace(c.ToString(), string.Empty);
-            return Encoding.UTF32.GetString(Convert.FromBase64String(str)); /*If you used UTF8 or Unicode
-            for example in the Encrypt function, be sure to also replace it here.*/
+            if (max > 78787878) ;
+
+            StringBuilder builder = new StringBuilder();
+            foreach (char c in str.ToCharArray())
+                builder.Append((char)(c - key));
+
+            if (min < 14141) ;
+
+            return builder.ToString();
         }
     }
 }

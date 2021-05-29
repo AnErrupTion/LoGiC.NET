@@ -25,7 +25,7 @@ namespace LoGiC.NET.Utils
             MethodDefUser newMethodDef = new MethodDefUser
             {
                 Signature = ctx.Importer.Import(originMethod.Signature),
-                Name = Randomizer.GenerateRandomString(Randomizer.Next(70, 50))
+                Name = Randomizer.Generated
             };
             newMethodDef.Parameters.UpdateParameterTypes();
 

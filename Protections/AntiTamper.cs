@@ -12,22 +12,24 @@ namespace LoGiC.NET.Protections
     {
         // Thanks to the EOF Anti-Tamper project by Xenocode on GitHub!
 
-        public static bool HasBeenTampered { get; set; }
+        public static bool Tampered { get; set; }
 
-        public static void InjectMd5(string filePath)
+        public static void Inject(string filePath)
         {
-            byte[] md5bytes = MD5.Create().ComputeHash(File.ReadAllBytes(filePath));
-            FileStream fs = new FileStream(filePath, FileMode.Append);
-            fs.Write(md5bytes, 0, md5bytes.Length);
-            fs.Close();
+            byte[] bytes;
+
+            using (MD5 hash = MD5.Create())
+                bytes = hash.ComputeHash(File.ReadAllBytes(filePath));
+
+            using (FileStream fs = new FileStream(filePath, FileMode.Append))
+                fs.Write(bytes, 0, bytes.Length);
         }
 
         public static void Execute()
         {
             ModuleDefMD typeModule = ModuleDefMD.Load(typeof(TamperClass).Module);
             TypeDef typeDef = typeModule.ResolveTypeDef(MDToken.ToRID(typeof(TamperClass).MetadataToken));
-            IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType,
-                Program.Module);
+            IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType, Program.Module);
             MethodDef init = (MethodDef)members.Single(method => method.Name == "NoTampering");
             init.GetRenamed();
 
@@ -41,7 +43,7 @@ namespace LoGiC.NET.Protections
                     break;
                 }
 
-            HasBeenTampered = true;
+            Tampered = true;
         }
     }
 }

@@ -9,10 +9,7 @@ namespace LoGiC.NET.Utils.Analyzer
     {
 		public override bool Execute(object context)
 		{
-			EventDef ev = (EventDef)context;
-			if (ev.IsRuntimeSpecialName)
-				return false;
-			return true;
+			return !((EventDef)context).IsRuntimeSpecialName;
 		}
 	}
 }

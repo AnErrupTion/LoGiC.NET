@@ -16,10 +16,9 @@ namespace LoGiC.NET.Protections
         {
             ModuleDefMD typeModule = ModuleDefMD.Load(typeof(StringDecoder).Module);
             TypeDef typeDef = typeModule.ResolveTypeDef(MDToken.ToRID(typeof(StringDecoder).MetadataToken));
-            IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType,
-                Program.Module);
+            IEnumerable<IDnlibDef> members = InjectHelper.Inject(typeDef, Program.Module.GlobalType, Program.Module);
             MethodDef init = (MethodDef)members.Single(method => method.Name == "Decrypt");
-            init.Rename(GenerateRandomString(MemberRenamer.StringLength()));
+            init.GetRenamed();
 
             foreach (MethodDef method in Program.Module.GlobalType.Methods)
                 if (method.Name.Equals(".ctor"))
@@ -30,34 +29,58 @@ namespace LoGiC.NET.Protections
 
             foreach (TypeDef type in Program.Module.Types)
             {
-                if (type.IsGlobalModuleType) continue;
+                if (type.IsGlobalModuleType)
+                    continue;
+
                 foreach (MethodDef method in type.Methods)
                 {
-                    if (!method.HasBody) continue;
+                    if (!method.HasBody)
+                        continue;
+
+                    method.Body.SimplifyBranches();
+
                     for (int i = 0; i < method.Body.Instructions.Count; i++)
                         if (method.Body.Instructions[i].OpCode == OpCodes.Ldstr)
                         {
+                            int key = Next();
                             string operand = method.Body.Instructions[i].Operand.ToString();
-                            method.Body.Instructions[i].Operand = Encrypt(operand);
-                            method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(init));
+
+                            method.Body.Instructions[i].Operand = Encrypt(operand, key);
+                            method.Body.Instructions.Insert(i + 1, OpCodes.Ldc_I4.ToInstruction(Next()));
+                            method.Body.Instructions.Insert(i + 2, OpCodes.Ldc_I4.ToInstruction(key));
+                            method.Body.Instructions.Insert(i + 3, OpCodes.Ldc_I4.ToInstruction(Next()));
+                            method.Body.Instructions.Insert(i + 4, OpCodes.Ldc_I4.ToInstruction(Next()));
+                            method.Body.Instructions.Insert(i + 5, OpCodes.Ldc_I4.ToInstruction(Next()));
+                            method.Body.Instructions.Insert(i + 6, OpCodes.Call.ToInstruction(init));
+                            
                             ++Amount;
                         }
+
+                    method.Body.OptimizeBranches();
                 }
             }
 
             Console.WriteLine($"  Encrypted {Amount} strings.");
         }
 
-        private static string Encrypt(string str)
+        private static string Encrypt(string str, int key)
         {
-            str = Convert.ToBase64String(Encoding.UTF32.GetBytes(str)); /*I'm using UTF32, but you can
+            //str = Convert.ToBase64String(Encoding.UTF32.GetBytes(str));
+            /*I'm using UTF32, but you can
             also use UTF8 or Unicode for example for shorter encryption.*/
-            char[] chars = "*$,;:!ù^*&é\"'(-è_çà)".ToCharArray();
+            //char[] chars = "*$,;:!ù^*&é\"'(-è_çà)".ToCharArray();
 
-            for (int i = 0; i < 5; i++) /*<-- this is how many times you will add every character from the
+            //for (int i = 0; i < 5; i++)
+            /*<-- this is how many times you will add every character from the
                 array at a random position. 5 is just enough for what we want to do.*/
-                foreach (char c in chars) str = str.Insert(Next(str.Length), c.ToString());
-            return str;
+            //foreach (char c in chars) str = str.Insert(Next(str.Length), c.ToString());
+            //return str;
+
+            StringBuilder builder = new StringBuilder();
+            foreach (char c in str.ToCharArray())
+                builder.Append((char)(c + key));
+
+            return builder.ToString();
         }
     }
 }

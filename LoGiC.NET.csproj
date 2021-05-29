@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>LoGiC.NET.Program</StartupObject>
@@ -56,12 +57,15 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protections\AntiDe4dot.cs" />
     <Compile Include="Protections\AntiTamper.cs" />
+    <Compile Include="Protections\ControlFlow.cs" />
     <Compile Include="Protections\IntEncoding.cs" />
     <Compile Include="Protections\JunkMethods.cs" />
     <Compile Include="Protections\ProxyAdder.cs" />
     <Compile Include="Protections\Renamer.cs" />
     <Compile Include="Protections\StringEncryption.cs" />
+    <Compile Include="Protections\StripDOSHeader.cs" />
     <Compile Include="Utils\Analyzer\DefAnalyzer.cs" />
     <Compile Include="Utils\Analyzer\EventDefAnalyzer.cs" />
     <Compile Include="Utils\Analyzer\FieldDefAnalyzer.cs" />

@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("LoGiC.NET")]
-[assembly: AssemblyDescription("A free and open-source complex .NET obfuscator using dnlib.")]
+[assembly: AssemblyDescription("A free, open-source and complex .NET obfuscator using dnlib.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("B3RAP Softwares")]
+[assembly: AssemblyCompany("Sartox Free Software")]
 [assembly: AssemblyProduct("LoGiC.NET")]
-[assembly: AssemblyCopyright("© AnErrupTion 2020")]
-[assembly: AssemblyTrademark("B3RAP Softwares")]
+[assembly: AssemblyCopyright("© AnErrupTion 2021")]
+[assembly: AssemblyTrademark("Sartox Free Software")]
 [assembly: AssemblyCulture("")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly
@@ -33,6 +33,6 @@ using System.Runtime.InteropServices;
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut
 // en utilisant '*', comme indiqué ci-dessous :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyVersion("1.5.0.0")]
+[assembly: AssemblyFileVersion("1.5.0.0")]
 [assembly: NeutralResourcesLanguage("en-US")]

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using LoGiC.NET.Utils;
@@ -26,13 +22,17 @@ namespace LoGiC.NET.Protections
             foreach (TypeDef type in Program.Module.Types)
                 foreach (MethodDef method in type.Methods)
                 {
-                    if (!method.HasBody) continue;
+                    if (!method.HasBody)
+                        continue;
+
                     for (int i = 0; i < method.Body.Instructions.Count; i++)
                         if (method.Body.Instructions[i].IsLdcI4())
                         {
-                            // The Absolute method.
                             int operand = method.Body.Instructions[i].GetLdcI4Value();
-                            if (operand <= 0) continue; // Prevents errors.
+                            if (operand <= 0) // Prevents errors.
+                                continue;
+
+                            // The Absolute method.
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
                                 Program.Module.Import(typeof(Math).GetMethod("Abs", new Type[] { typeof(int) }))));
 
@@ -42,6 +42,24 @@ namespace LoGiC.NET.Protections
                             method.Body.Instructions[i].Operand = GenerateRandomString(operand);
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
                                 Program.Module.Import(typeof(string).GetMethod("get_Length"))));*/
+
+                            // The Negative method.
+                            for (var j = 0; j < 8; j++)
+                                method.Body.Instructions.Insert(i + j + 1, Instruction.Create(OpCodes.Neg));
+
+                            // The Max method.
+                            /*if (operand > 1)
+                            {
+                                method.Body.Instructions.Insert(i + 1, OpCodes.Ldc_I4.ToInstruction(1));
+                                method.Body.Instructions.Insert(i + 2, OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Math).GetMethod("Max", new Type[] { typeof(int), typeof(int) }))));
+                            }*/
+
+                            // The Min method.
+                            if (operand < int.MaxValue)
+                            {
+                                method.Body.Instructions.Insert(i + 1, OpCodes.Ldc_I4.ToInstruction(int.MaxValue));
+                                method.Body.Instructions.Insert(i + 2, OpCodes.Call.ToInstruction(Program.Module.Import(typeof(Math).GetMethod("Min", new Type[] { typeof(int), typeof(int) }))));
+                            }
 
                             ++Amount;
                         }

@@ -12,12 +12,12 @@ namespace LoGiC.NET.Utils
 
         public static void GetRenamed(this IMemberDef member)
         {
-            member.Rename(Randomizer.GenerateRandomString(StringLength()));
+            member.Rename(Randomizer.Generated);
         }
 
         public static int StringLength()
         {
-            return Randomizer.Next(70, 50);
+            return Randomizer.Next(10, 5);
         }
     }
 }

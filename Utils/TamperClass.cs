@@ -9,14 +9,12 @@ namespace LoGiC.NET.Utils
     {
         static void NoTampering()
         {
-            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            Stream stream = new StreamReader(assemblyLocation).BaseStream;
-            BinaryReader reader = new BinaryReader(stream);
-            string newMd5 = BitConverter.ToString(MD5.Create().ComputeHash(reader.ReadBytes(File.ReadAllBytes(assemblyLocation).Length -
-                16)));
-            stream.Seek(-16, SeekOrigin.End);
-            string realMd5 = BitConverter.ToString(reader.ReadBytes(16));
-            if (newMd5 != realMd5) throw new EntryPointNotFoundException();
+            string p = Assembly.GetExecutingAssembly().Location;
+            Stream l = new StreamReader(p).BaseStream;
+            BinaryReader r = new BinaryReader(l);
+            string g = BitConverter.ToString(MD5.Create().ComputeHash(r.ReadBytes(File.ReadAllBytes(p).Length - 16)));
+            l.Seek(-16, SeekOrigin.End);
+            if (g != BitConverter.ToString(r.ReadBytes(16))) throw new EntryPointNotFoundException();
         }
     }
 }

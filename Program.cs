@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using dnlib.DotNet;
-using dnlib.DotNet.Writer;
 using LoGiC.NET.Protections;
 using SharpConfigParser;
 using LoGiC.NET.Utils;
@@ -20,10 +19,12 @@ namespace LoGiC.NET
 
         public static string FilePath { get; set; }
 
+        public static MemoryStream Stream = new MemoryStream();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Drag & drop your file : ");
-            string path = Console.ReadLine();
+            string path = Console.ReadLine().Replace("\"", string.Empty);
 
             Console.WriteLine("Preparing obfuscation...");
             if (!File.Exists("config.txt"))
@@ -34,6 +35,8 @@ namespace LoGiC.NET
             Parser p = new Parser() { ConfigFile = "config.txt" };
             ForceWinForms = bool.Parse(p.Read("ForceWinFormsCompatibility").ReadResponse().ReplaceSpaces());
             DontRename = bool.Parse(p.Read("DontRename").ReadResponse().ReplaceSpaces());
+
+            Randomizer.Initialize();
 
             obfuscation:
             Module = ModuleDefMD.Load(path);
@@ -48,25 +51,35 @@ namespace LoGiC.NET
             Console.WriteLine("Adding proxy calls...");
             ProxyAdder.Execute();
 
-            Console.WriteLine("Encoding ints...");
-            IntEncoding.Execute();
-
             Console.WriteLine("Encrypting strings...");
             StringEncryption.Execute();
 
             Console.WriteLine("Injecting Anti-Tamper...");
             AntiTamper.Execute();
 
+            Console.WriteLine("Executing Anti-De4dot...");
+            AntiDe4dot.Execute();
+
+            Console.WriteLine("Executing Control Flow...");
+            ControlFlow.Execute();
+
+            Console.WriteLine("Encoding ints...");
+            IntEncoding.Execute();
+
             Console.WriteLine("Watermarking...");
             Watermark.AddAttribute();
 
             Console.WriteLine("Saving file...");
-            FilePath = @"C:\Users\" + Environment.UserName + @"\Desktop\" + Path.GetFileNameWithoutExtension(path) + "_protected" +
-                FileExtension;
-            ModuleWriterOptions opts = new ModuleWriterOptions(Module) { Logger = DummyLogger.NoThrowInstance };
-            Module.Write(FilePath, opts);
+            FilePath = @"C:\Users\" + Environment.UserName + @"\Desktop\" + Path.GetFileNameWithoutExtension(path) + "_protected" + FileExtension;
+            Module.Write(Stream, new dnlib.DotNet.Writer.ModuleWriterOptions(Module) { Logger = DummyLogger.NoThrowInstance });
 
-            if (AntiTamper.HasBeenTampered) AntiTamper.InjectMd5(FilePath);
+            StripDOSHeader.Execute();
+
+            // Save stream to file
+            File.WriteAllBytes(FilePath, Stream.ToArray());
+
+            if (AntiTamper.Tampered)
+                AntiTamper.Inject(FilePath);
 
             Console.WriteLine("Done! Press any key to exit...");
             Console.ReadKey();

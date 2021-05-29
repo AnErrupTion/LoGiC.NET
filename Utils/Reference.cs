@@ -3,6 +3,6 @@
     public class Reference
     {
         public static string Name = "LoGiC.NET";
-        public static string Version = "1.4";
+        public static string Version = "1.5";
     }
 }
