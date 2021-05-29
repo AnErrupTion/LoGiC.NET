@@ -8,8 +8,8 @@ LoGiC.NET is a free and open-source .NET obfuscator that uses dnlib for folks th
 <img src="https://i.imgur.com/W68kj01.png">
 
 # Dependencies
-dnlib v3.3.1 : Restore NuGet packages and it'll work.<br/>
-SharpConfigParser : https://mega.nz/#!c3BxUKoK!3Uvx6izl_Gv1hnGJOzeBSRs4EzcaIjCCOMA2SgKW5FM
+dnlib v3.3.2 : Included with the project, if it doesn't work try to restore NuGet packages.<br/>
+SharpConfigParser : https://github.com/AnErrupTion/LoGiC.NET/raw/master/SharpConfigParser.dll
 
 # Current Features
 - Renames methods, parameters, properties, fields and events.
