@@ -1,0 +1,6 @@
+/* These are the settings for LoGiC.NET in case you need them. */
+
+/* This setting will force the compatibility for winforms programs in case the renaming breaks your program. */
+ForceWinFormsCompatibility: false
+/* This setting will completely disable the renaming in case it really doesn't work with your program. */
+DontRename: false
