@@ -9,11 +9,9 @@ namespace LoGiC.NET.Protections
         public static void Execute()
         {
             AssemblyDef asm = Program.Module.Assembly;
-            ModuleDef manifestModule = asm.ManifestModule;
-
             asm.ManifestModule.Import(new FieldDefUser(Randomizer.String(MemberRenamer.StringLength())));
 
-            foreach (var current in manifestModule.Types)
+            foreach (var current in asm.ManifestModule.Types)
             {
                 TypeDefUser typeDef = new TypeDefUser(Randomizer.String(MemberRenamer.StringLength()));
                 typeDef.Methods.Add(new MethodDefUser());
@@ -24,8 +22,10 @@ namespace LoGiC.NET.Protections
                 current.NestedTypes.Add(typeDef);
                 current.Events.Add(new EventDefUser());
 
-                MethodDefUser methodDef = new MethodDefUser();
-                methodDef.MethodSig = new MethodSig();
+                MethodDefUser methodDef = new MethodDefUser
+                {
+                    MethodSig = new MethodSig()
+                };
 
                 foreach (MethodDef current2 in current.Methods)
                 {
@@ -33,12 +33,10 @@ namespace LoGiC.NET.Protections
                         continue;
 
                     current2.Body.SimplifyBranches();
-                    if (current2.ReturnType.FullName == "System.Void" && current2.HasBody && current2.Body.Instructions.Count != 0 && !current2.Body.HasExceptionHandlers)
+                    if (current2.ReturnType.FullName == "System.Void" && current2.Body.Instructions.Count > 0 && !current2.Body.HasExceptionHandlers)
                     {
-                        TypeSig typeSig = asm.ManifestModule.Import(typeof(int)).ToTypeSig();
-                        Local local = new Local(typeSig);
-                        TypeSig typeSig2 = asm.ManifestModule.Import(typeof(bool)).ToTypeSig();
-                        Local local2 = new Local(typeSig2);
+                        Local local = new Local(asm.ManifestModule.Import(typeof(int)).ToTypeSig());
+                        Local local2 = new Local(asm.ManifestModule.Import(typeof(bool)).ToTypeSig());
 
                         current2.Body.Variables.Add(local);
                         current2.Body.Variables.Add(local2);
@@ -85,23 +83,6 @@ namespace LoGiC.NET.Protections
                     }
                 }
             }
-
-            TypeDefUser typeDef2 = new TypeDefUser(Randomizer.String(MemberRenamer.StringLength()));
-            FieldDefUser item2 = new FieldDefUser(Randomizer.String(MemberRenamer.StringLength()), new FieldSig(manifestModule.Import(typeof(Decap)).ToTypeSig()));
-
-            typeDef2.Fields.Add(item2);
-            typeDef2.BaseType = manifestModule.Import(typeof(Decap));
-
-            manifestModule.Types.Add(typeDef2);
-
-            TypeDefUser typeDef3 = new TypeDefUser(Randomizer.String(MemberRenamer.StringLength()))
-            {
-                IsInterface = true,
-                IsSealed = true
-            };
-
-            manifestModule.Types.Add(typeDef3);
-            manifestModule.TablesHeaderVersion = new ushort?(257);
         }
     }
 }

@@ -65,7 +65,7 @@ namespace LoGiC.NET
 
             Console.WriteLine("Encoding ints...");
             IntEncoding.Execute();
-
+            
             Console.WriteLine("Adding proxy calls...");
             ProxyAdder.Execute();
 

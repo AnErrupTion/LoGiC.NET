@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,7 +75,6 @@
     <Compile Include="Utils\Analyzer\MethodDefAnalyzer.cs" />
     <Compile Include="Utils\Analyzer\ParameterAnalyzer.cs" />
     <Compile Include="Utils\Analyzer\PropertyDefAnalyzer.cs" />
-    <Compile Include="Utils\Decap.cs" />
     <Compile Include="Utils\InjectContext.cs" />
     <Compile Include="Utils\InjectHelper.cs" />
     <Compile Include="Utils\ProxyExtension.cs" />

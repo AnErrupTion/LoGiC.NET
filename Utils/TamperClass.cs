@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace LoGiC.NET.Utils
 {
-    class TamperClass
+    public static class TamperClass
     {
-        static void NoTampering()
+        public static void NoTampering()
         {
             string p = Assembly.GetExecutingAssembly().Location;
             Stream l = new StreamReader(p).BaseStream;
