@@ -10,7 +10,7 @@ namespace LoGiC.NET.Utils.Analyzer
 		public override bool Execute(object context)
 		{
 			MethodDef method = (MethodDef)context;
-			return !method.IsRuntimeSpecialName && !method.DeclaringType.IsForwarder && !method.IsConstructor;
+			return !method.IsRuntimeSpecialName && !method.DeclaringType.IsForwarder && !method.IsConstructor && !method.IsVirtual;
 		}
 	}
 }
