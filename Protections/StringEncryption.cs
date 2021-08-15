@@ -28,10 +28,6 @@ namespace LoGiC.NET.Protections
                 }
 
             foreach (TypeDef type in Program.Module.Types)
-            {
-                if (type.IsGlobalModuleType)
-                    continue;
-
                 foreach (MethodDef method in type.Methods)
                 {
                     if (!method.HasBody)
@@ -40,12 +36,15 @@ namespace LoGiC.NET.Protections
                     method.Body.SimplifyBranches();
 
                     for (int i = 0; i < method.Body.Instructions.Count; i++)
-                        if (method.Body.Instructions[i].OpCode == OpCodes.Ldstr)
+                        if (method.Body.Instructions[i] != null && method.Body.Instructions[i].OpCode == OpCodes.Ldstr)
                         {
                             int key = Next();
-                            string operand = method.Body.Instructions[i].Operand.ToString();
+                            object op = method.Body.Instructions[i].Operand;
 
-                            method.Body.Instructions[i].Operand = Encrypt(operand, key);
+                            if (op == null)
+                                continue;
+
+                            method.Body.Instructions[i].Operand = Encrypt(op.ToString(), key);
                             method.Body.Instructions.Insert(i + 1, OpCodes.Ldc_I4.ToInstruction(Next()));
                             method.Body.Instructions.Insert(i + 2, OpCodes.Ldc_I4.ToInstruction(key));
                             method.Body.Instructions.Insert(i + 3, OpCodes.Ldc_I4.ToInstruction(Next()));
@@ -58,7 +57,6 @@ namespace LoGiC.NET.Protections
 
                     method.Body.OptimizeBranches();
                 }
-            }
 
             Console.WriteLine($"  Encrypted {Amount} strings.");
         }
