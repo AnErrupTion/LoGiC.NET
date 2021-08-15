@@ -26,7 +26,7 @@ namespace LoGiC.NET.Protections
                         continue;
 
                     for (int i = 0; i < method.Body.Instructions.Count; i++)
-                        if (method.Body.Instructions[i].IsLdcI4())
+                        if (method.Body.Instructions[i] != null && method.Body.Instructions[i].IsLdcI4())
                         {
                             int operand = method.Body.Instructions[i].GetLdcI4Value();
                             if (operand <= 0) // Prevents errors.
@@ -37,14 +37,18 @@ namespace LoGiC.NET.Protections
                                 Program.Module.Import(typeof(Math).GetMethod("Abs", new Type[] { typeof(int) }))));
 
                             // The String Length method.
-                            // To fix
+                            // TODO: Fix
                             /*method.Body.Instructions[i].OpCode = OpCodes.Ldstr;
-                            method.Body.Instructions[i].Operand = GenerateRandomString(operand);
+                            method.Body.Instructions[i].Operand = String(operand);
                             method.Body.Instructions.Insert(i + 1, OpCodes.Call.ToInstruction(
                                 Program.Module.Import(typeof(string).GetMethod("get_Length"))));*/
 
                             // The Negative method.
-                            for (var j = 0; j < 8; j++)
+                            int neg = Next(MemberRenamer.StringLength(), 8);
+                            if (neg % 2 != 0)
+                                neg += 1;
+
+                            for (var j = 0; j < neg; j++)
                                 method.Body.Instructions.Insert(i + j + 1, Instruction.Create(OpCodes.Neg));
 
                             // The Max method.
