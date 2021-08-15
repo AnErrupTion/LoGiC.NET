@@ -66,11 +66,11 @@ namespace LoGiC.NET
             Console.WriteLine("Encoding ints...");
             IntEncoding.Execute();
 
-            Console.WriteLine("Adding invalid metadata...");
-            InvalidMetadata.Execute();
-
             Console.WriteLine("Adding proxy calls...");
             ProxyAdder.Execute();
+
+            Console.WriteLine("Adding invalid metadata...");
+            InvalidMetadata.Execute();
 
             Console.WriteLine("Watermarking...");
             Watermark.AddAttribute();
