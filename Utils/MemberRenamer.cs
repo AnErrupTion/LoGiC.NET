@@ -7,12 +7,12 @@ namespace LoGiC.NET.Utils
         // Thanks to the AsStrongAsFuck project!
         public static void GetRenamed(this IMemberDef member)
         {
-            member.Name = Randomizer.Generated;
+            member.Name = Randomizer.String(StringLength());
         }
 
         public static int StringLength()
         {
-            return Randomizer.Next(10, 5);
+            return Randomizer.Next(120, 30);
         }
     }
 }

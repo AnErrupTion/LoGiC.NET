@@ -29,8 +29,8 @@ namespace LoGiC.NET.Protections
             Program.Module.EncId = Guid.NewGuid();
             Program.Module.EncBaseId = Guid.NewGuid();
 
-            Program.Module.Name = Generated;
-            Program.Module.EntryPoint.Name = Generated;
+            Program.Module.Name = String(MemberRenamer.StringLength());
+            Program.Module.EntryPoint.Name = String(MemberRenamer.StringLength());
 
             foreach (TypeDef type in Program.Module.Types)
             {
@@ -45,14 +45,14 @@ namespace LoGiC.NET.Protections
                 {
                     if (CanRename(m) && !Program.ForceWinForms && !Program.FileExtension.Contains("dll"))
                     {
-                        m.Name = Generated;
+                        m.Name = String(MemberRenamer.StringLength());
                         ++MethodAmount;
                     }
 
                     foreach (Parameter para in m.Parameters)
                         if (CanRename(para))
                         {
-                            para.Name = Generated;
+                            para.Name = String(MemberRenamer.StringLength());
                             ++ParameterAmount;
                         }
                 }
@@ -60,7 +60,7 @@ namespace LoGiC.NET.Protections
                 foreach (PropertyDef p in type.Properties)
                     if (CanRename(p))
                     {
-                        p.Name = Generated;
+                        p.Name = String(MemberRenamer.StringLength());
                         ++PropertyAmount;
                     }
 
@@ -74,7 +74,7 @@ namespace LoGiC.NET.Protections
                 foreach (EventDef e in type.Events)
                     if (CanRename(e))
                     {
-                        e.Name = Generated;
+                        e.Name = String(MemberRenamer.StringLength());
                         ++EventAmount;
                     }
             }
