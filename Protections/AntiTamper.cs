@@ -16,13 +16,13 @@ namespace LoGiC.NET.Protections
 
         public static void Inject(string filePath)
         {
-            byte[] bytes;
-
             using (MD5 hash = MD5.Create())
-                bytes = hash.ComputeHash(File.ReadAllBytes(filePath));
+            {
+                byte[] bytes = hash.ComputeHash(File.ReadAllBytes(filePath));
 
-            using (FileStream fs = new FileStream(filePath, FileMode.Append))
-                fs.Write(bytes, 0, bytes.Length);
+                using (FileStream fs = new FileStream(filePath, FileMode.Append))
+                    fs.Write(bytes, 0, bytes.Length);
+            }
         }
 
         public static void Execute()
