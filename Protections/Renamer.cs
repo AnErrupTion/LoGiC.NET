@@ -34,7 +34,7 @@ namespace LoGiC.NET.Protections
 
             foreach (TypeDef type in Program.Module.Types)
             {
-                if (type.Namespace == Program.Module.EntryPoint.FullName.Split(' ')[1].Split('.')[0])
+                if (CanRename(type))
                 {
                     // Hide namespace
                     type.Namespace = string.Empty;
@@ -96,6 +96,7 @@ namespace LoGiC.NET.Protections
             else if (obj is EventDef) analyze = new EventDefAnalyzer();
             else if (obj is FieldDef) analyze = new FieldDefAnalyzer();
             else if (obj is Parameter) analyze = new ParameterAnalyzer();
+            else if (obj is TypeDef) analyze = new TypeDefAnalyzer();
             else return false;
             return analyze.Execute(obj);
         }
