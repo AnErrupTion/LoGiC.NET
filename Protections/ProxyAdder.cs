@@ -11,7 +11,7 @@ namespace LoGiC.NET.Protections
         /// <summary>
         /// The intensity of the proxy calls. The more the intensity is, the more proxy calls will be added!
         /// </summary>
-        private static int Intensity { get; set; } = 2;
+        public static int Intensity { get; set; } = 2;
 
         /// <summary>
         /// The amount of added proxy calls.
@@ -27,10 +27,6 @@ namespace LoGiC.NET.Protections
         {
             for (int o = 0; o < Intensity; o++)
                 foreach (TypeDef t in Program.Module.Types)
-                {
-                    if (t.IsGlobalModuleType)
-                        continue;
-
                     foreach (MethodDef m in t.Methods.ToArray())
                     {
                         if (!m.HasBody)
@@ -74,11 +70,9 @@ namespace LoGiC.NET.Protections
 
                                     targetMethod.Body = body;
                                     ++Amount;
-                                }
-                                catch { continue; }
+                                } catch { continue; }
                             }
                     }
-                }
 
             Console.WriteLine($"  Added {Amount} proxy calls.");
         }
