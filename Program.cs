@@ -4,6 +4,7 @@ using dnlib.DotNet;
 using LoGiC.NET.Protections;
 using SharpConfigParser;
 using LoGiC.NET.Utils;
+using dnlib.DotNet.Writer;
 
 namespace LoGiC.NET
 {
@@ -21,7 +22,7 @@ namespace LoGiC.NET
 
         public static MemoryStream Stream = new MemoryStream();
 
-        static void Main(string[] args)
+        static void Main(string[] _)
         {
             Console.WriteLine("Drag & drop your file : ");
             string path = Console.ReadLine().Replace("\"", string.Empty);
@@ -32,6 +33,7 @@ namespace LoGiC.NET
                 Console.WriteLine("Config file not found, continuing without it.");
                 goto obfuscation;
             }
+
             Parser p = new Parser() { ConfigFile = "config.txt" };
             try { ForceWinForms = bool.Parse(p.Read("ForceWinFormsCompatibility").ReadResponse().ReplaceSpaces()); } catch { }
             try { DontRename = bool.Parse(p.Read("DontRename").ReadResponse().ReplaceSpaces()); } catch { }
@@ -51,8 +53,8 @@ namespace LoGiC.NET
             Console.WriteLine("Injecting Anti-Tamper...");
             AntiTamper.Execute();
 
-            Console.WriteLine("Adding junk methods...");
-            JunkMethods.Execute();
+            Console.WriteLine("Adding junk defs...");
+            JunkDefs.Execute();
 
             Console.WriteLine("Encrypting strings...");
             StringEncryption.Execute();
@@ -77,7 +79,7 @@ namespace LoGiC.NET
 
             Console.WriteLine("Saving file...");
             FilePath = @"C:\Users\" + Environment.UserName + @"\Desktop\" + Path.GetFileNameWithoutExtension(path) + "_protected" + FileExtension;
-            Module.Write(Stream, new dnlib.DotNet.Writer.ModuleWriterOptions(Module) { Logger = DummyLogger.NoThrowInstance });
+            Module.Write(Stream, new ModuleWriterOptions(Module) { Logger = DummyLogger.NoThrowInstance });
 
             Console.WriteLine("Stripping DOS header...");
             StripDOSHeader.Execute();
