@@ -65,6 +65,7 @@
     <Compile Include="Protections\IntEncoding.cs" />
     <Compile Include="Protections\InvalidMetadata.cs" />
     <Compile Include="Protections\JunkDefs.cs" />
+    <Compile Include="Protections\Protection.cs" />
     <Compile Include="Protections\ProxyAdder.cs" />
     <Compile Include="Protections\Renamer.cs" />
     <Compile Include="Protections\StringEncryption.cs" />

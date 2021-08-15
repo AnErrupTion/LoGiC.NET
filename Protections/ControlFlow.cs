@@ -5,9 +5,14 @@ using System;
 
 namespace LoGiC.NET.Protections
 {
-    public class ControlFlow : Randomizer
+    public class ControlFlow : Protection
     {
-        public static void Execute()
+        public ControlFlow()
+        {
+            Name = "Control Flow";
+        }
+
+        public override void Execute()
         {
             int amount = 0;
 
@@ -32,17 +37,17 @@ namespace LoGiC.NET.Protections
             }
         }
 
-        private static void ExecuteMethod(MethodDef method)
+        private void ExecuteMethod(MethodDef method)
         {
             for (int i = 0; i < method.Body.Instructions.Count; i++)
                 if (method.Body.Instructions[i].IsLdcI4())
                 {
-                    int numorig = Next();
-                    int div = Next();
+                    int numorig = Randomizer.Next();
+                    int div = Randomizer.Next();
 
                     int num = numorig ^ div;
 
-                    int lastIndex = Next(types.Length);
+                    int lastIndex = Randomizer.Next(types.Length);
                     Type randType = types[lastIndex];
 
                     Instruction nop = OpCodes.Nop.ToInstruction();
@@ -68,7 +73,7 @@ namespace LoGiC.NET.Protections
                 }
         }
 
-        private static readonly Type[] types = new Type[]
+        private readonly Type[] types = new Type[]
         {
             typeof(uint),
             typeof(int),
@@ -79,7 +84,7 @@ namespace LoGiC.NET.Protections
             typeof(double)
         };
 
-        private static readonly int[] sizes = new int[]
+        private readonly int[] sizes = new int[]
         {
             sizeof(uint),
             sizeof(int),

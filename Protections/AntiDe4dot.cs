@@ -2,9 +2,14 @@
 
 namespace LoGiC.NET.Protections
 {
-    public class AntiDe4dot
+    public class AntiDe4dot : Protection
     {
-        public static void Execute()
+        public AntiDe4dot()
+        {
+            Name = "Anti-De4dot";
+        }
+
+        public override void Execute()
         {
             foreach (ModuleDef module in Program.Module.Assembly.Modules)
             {

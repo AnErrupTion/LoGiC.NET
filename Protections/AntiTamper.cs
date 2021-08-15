@@ -8,8 +8,13 @@ using LoGiC.NET.Utils;
 
 namespace LoGiC.NET.Protections
 {
-    public class AntiTamper : Randomizer
+    public class AntiTamper : Protection
     {
+        public AntiTamper()
+        {
+            Name = "Anti-Tamper";
+        }
+
         // Thanks to the EOF Anti-Tamper project by Xenocode on GitHub!
 
         public static bool Tampered { get; set; }
@@ -25,7 +30,7 @@ namespace LoGiC.NET.Protections
             }
         }
 
-        public static void Execute()
+        public override void Execute()
         {
             ModuleDefMD typeModule = ModuleDefMD.Load(typeof(TamperClass).Module);
             TypeDef typeDef = typeModule.ResolveTypeDef(MDToken.ToRID(typeof(TamperClass).MetadataToken));

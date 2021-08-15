@@ -4,9 +4,14 @@ using LoGiC.NET.Utils;
 
 namespace LoGiC.NET.Protections
 {
-    public class InvalidMetadata
+    public class InvalidMetadata : Protection
     {
-        public static void Execute()
+        public InvalidMetadata()
+        {
+            Name = "Invalid Metadata";
+        }
+
+        public override void Execute()
         {
             AssemblyDef asm = Program.Module.Assembly;
             asm.ManifestModule.Import(new FieldDefUser(Randomizer.String(MemberRenamer.StringLength())));

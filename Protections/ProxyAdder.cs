@@ -6,8 +6,13 @@ using LoGiC.NET.Utils;
 
 namespace LoGiC.NET.Protections
 {
-    public class ProxyAdder
+    public class ProxyAdder : Protection
     {
+        public ProxyAdder()
+        {
+            Name = "Proxy Adder";
+        }
+
         /// <summary>
         /// The intensity of the proxy calls. The more the intensity is, the more proxy calls will be added!
         /// </summary>
@@ -16,14 +21,14 @@ namespace LoGiC.NET.Protections
         /// <summary>
         /// The amount of added proxy calls.
         /// </summary>
-        private static int Amount { get; set; }
+        private int Amount { get; set; }
 
         // Thanks to the BasicProxyObfuscator project by XenocodeRCE on GitHub!
 
         /// <summary>
         /// Execution of the 'ProxyAdder' method. It'll add proxy calls, basically each proxy call will call another method that will call another method, etc. until it calls a real method (example : InitializeComponent).
         /// </summary>
-        public static void Execute()
+        public override void Execute()
         {
             for (int o = 0; o < Intensity; o++)
                 foreach (TypeDef t in Program.Module.Types)
