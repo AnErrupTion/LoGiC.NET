@@ -63,11 +63,11 @@ namespace LoGiC.NET
             Console.WriteLine("Executing Control Flow...");
             ControlFlow.Execute();
 
-            /*Console.WriteLine("Encoding ints...");
-            IntEncoding.Execute();*/
+            Console.WriteLine("Encoding ints...");
+            IntEncoding.Execute();
 
-            /*Console.WriteLine("Adding invalid metadata...");
-            InvalidMetadata.Execute();*/
+            Console.WriteLine("Adding invalid metadata...");
+            InvalidMetadata.Execute();
 
             Console.WriteLine("Adding proxy calls...");
             ProxyAdder.Execute();
