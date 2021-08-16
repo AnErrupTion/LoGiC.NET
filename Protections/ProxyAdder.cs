@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using LoGiC.NET.Utils;
@@ -32,27 +31,27 @@ namespace LoGiC.NET.Protections
         {
             for (int o = 0; o < Intensity; o++)
                 foreach (TypeDef t in Program.Module.Types)
-                    foreach (MethodDef m in t.Methods.ToArray())
+                    for (int i = 0; i < t.Methods.Count; i++)
                     {
+                        MethodDef m = t.Methods[i];
+
                         if (!m.HasBody)
                             continue;
 
                         for (int z = 0; z < m.Body.Instructions.Count; z++)
                             if (m.Body.Instructions[z].OpCode == OpCodes.Call)
                             {
-                                try
-                                {
-                                    MethodDef targetMethod = m.Body.Instructions[z].Operand as MethodDef;
-                                    if (!targetMethod.FullName.Contains(Program.Module.Assembly.Name) || targetMethod.Parameters.Count == 0 || targetMethod.Parameters.Count > 4)
-                                        continue;
+                                if (!(m.Body.Instructions[z].Operand is MethodDef targetMethod) || !targetMethod.FullName.Contains(Program.Module.Assembly.Name) || targetMethod.Parameters.Count > 4)
+                                    continue;
 
-                                    MethodDef newMeth = targetMethod.CopyMethod(Program.Module);
-                                    targetMethod.DeclaringType.Methods.Add(newMeth);
-                                    targetMethod.CloneSignature(newMeth);
+                                MethodDef newMeth = targetMethod.CopyMethod(Program.Module);
+                                targetMethod.DeclaringType.Methods.Add(newMeth);
+                                targetMethod.CloneSignature(newMeth);
 
-                                    CilBody body = new CilBody();
-                                    body.Instructions.Add(OpCodes.Nop.ToInstruction());
+                                CilBody body = new CilBody();
+                                body.Instructions.Add(OpCodes.Nop.ToInstruction());
 
+                                if (targetMethod.Parameters.Count > 0)
                                     for (int x = 0; x < targetMethod.Parameters.Count; x++)
                                         switch (x)
                                         {
@@ -70,12 +69,11 @@ namespace LoGiC.NET.Protections
                                                 break;
                                         }
 
-                                    body.Instructions.Add(OpCodes.Call.ToInstruction(newMeth));
-                                    body.Instructions.Add(OpCodes.Ret.ToInstruction());
+                                body.Instructions.Add(OpCodes.Call.ToInstruction(newMeth));
+                                body.Instructions.Add(OpCodes.Ret.ToInstruction());
 
-                                    targetMethod.Body = body;
-                                    ++Amount;
-                                } catch { continue; }
+                                targetMethod.Body = body;
+                                ++Amount;
                             }
                     }
 
