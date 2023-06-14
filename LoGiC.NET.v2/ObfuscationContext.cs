@@ -6,8 +6,13 @@ public sealed class ObfuscationContext
 {
     public readonly ModuleDefMD Module;
 
-    public ObfuscationContext(string path)
+    public ObfuscationContext(string inputPath)
     {
-        Module = ModuleDefMD.Load(path);
+        Module = ModuleDefMD.Load(inputPath);
+    }
+
+    public void Save(string outputPath)
+    {
+        Module.Write(outputPath);
     }
 }

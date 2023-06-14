@@ -1,3 +1,5 @@
+using LoGiC.NET.v2.Utils;
+
 namespace LoGiC.NET.v2.Obfuscation;
 
 public sealed class RenameObfuscation : BaseObfuscation
@@ -12,17 +14,17 @@ public sealed class RenameObfuscation : BaseObfuscation
         context.Module.EncId = Guid.NewGuid();
         context.Module.EncBaseId = Guid.NewGuid();
 
-        context.Module.Name = context.Module.Name.GetHashCode().ToString();
+        context.Module.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
         foreach (var type in context.Module.Types)
         {
             if (type is
                 {
-                    IsSpecialName: false, IsRuntimeSpecialName: false, IsWindowsRuntime: false
+                    IsSpecialName: false, IsRuntimeSpecialName: false, IsWindowsRuntime: false, IsPublic: false
                 })
             {
-                type.Namespace = type.Namespace.GetHashCode().ToString();
-                type.Name = type.Name.GetHashCode().ToString();
+                type.Namespace = NumberUtils.Random.Next().GetHashCode().ToString();
+                type.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
                 _renamedTypes++;
             }
@@ -35,10 +37,10 @@ public sealed class RenameObfuscation : BaseObfuscation
             {
                 if (field is
                     {
-                        IsSpecialName: false, IsRuntimeSpecialName: false
+                        IsSpecialName: false, IsRuntimeSpecialName: false, IsPublic: false
                     })
                 {
-                    field.Name = field.Name.GetHashCode().ToString();
+                    field.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
                     _renamedFields++;
                 }
@@ -55,7 +57,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                         IsSpecialName: false, IsRuntimeSpecialName: false
                     })
                 {
-                    property.Name = property.Name.GetHashCode().ToString();
+                    property.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
                     _renamedProperties++;
                 }
@@ -72,7 +74,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                         IsSpecialName: false, IsRuntimeSpecialName: false
                     })
                 {
-                    ev.Name = ev.Name.GetHashCode().ToString();
+                    ev.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
                     _renamedEvents++;
                 }
@@ -86,10 +88,10 @@ public sealed class RenameObfuscation : BaseObfuscation
             {
                 if (method is
                     {
-                        IsSpecialName: false, IsRuntimeSpecialName: false, IsRuntime: false, IsConstructor: false
+                        IsSpecialName: false, IsRuntimeSpecialName: false, IsRuntime: false, IsConstructor: false, IsPublic: false
                     })
                 {
-                    method.Name = method.Name.GetHashCode().ToString();
+                    method.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
                     _renamedMethods++;
                 }
@@ -102,7 +104,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                 {
                     if (!parameter.IsHiddenThisParameter)
                     {
-                        parameter.Name = parameter.Name.GetHashCode().ToString();
+                        parameter.Name = NumberUtils.Random.Next().GetHashCode().ToString();
 
                         _renamedParameters++;
                     }
