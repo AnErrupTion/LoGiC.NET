@@ -4,6 +4,7 @@ using LoGiC.NET.v2.Utils;
 
 namespace LoGiC.NET.v2.Obfuscation;
 
+// TODO: Fix
 public sealed class CallifyInstructionsObfuscation : BaseObfuscation
 {
     public override string Name => "Callify instructions";
@@ -58,7 +59,7 @@ public sealed class CallifyInstructionsObfuscation : BaseObfuscation
                     body.Instructions.Add(instruction);
                     body.Instructions.Add(Instruction.Create(OpCodes.Ret));
 
-                    var newMethod = new MethodDefUser(NumberUtils.Random.Next().ToString().GetHashCode().ToString(),
+                    var newMethod = new MethodDefUser(NumberUtils.Random.NextInt64().ToString().ToString(),
                         MethodSig.CreateStatic(returnType))
                     {
                         Body = body

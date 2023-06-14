@@ -22,6 +22,7 @@ Terminal.Info("Loading obfuscations");
 var obfuscations = new BaseObfuscation[]
 {
     new RenameObfuscation(),
+    new JunkMembersObfuscation(),
     new InstructionExpansionObfuscation(),
     //new CallifyInstructionsObfuscation(),
     new IntEncodingObfuscation(),

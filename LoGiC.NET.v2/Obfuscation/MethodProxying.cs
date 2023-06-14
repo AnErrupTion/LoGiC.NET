@@ -4,6 +4,7 @@ using LoGiC.NET.v2.Utils;
 
 namespace LoGiC.NET.v2.Obfuscation;
 
+// TODO: Fix
 public sealed class MethodProxying : BaseObfuscation
 {
     public override string Name => "Method proxying";
@@ -31,7 +32,7 @@ public sealed class MethodProxying : BaseObfuscation
                         continue;
                     }
 
-                    var newMethod = new MethodDefUser(NumberUtils.Random.Next().GetHashCode().ToString(), methodToCall.MethodSig, methodToCall.Attributes);
+                    var newMethod = new MethodDefUser(NumberUtils.Random.NextInt64().ToString(), methodToCall.MethodSig, methodToCall.Attributes);
                     var newMethodBody = new CilBody();
 
                     for (ushort j = 0; j < newMethod.Parameters.Count; j++)

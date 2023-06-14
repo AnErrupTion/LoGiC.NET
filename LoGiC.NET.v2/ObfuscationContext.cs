@@ -6,9 +6,12 @@ public sealed class ObfuscationContext
 {
     public readonly ModuleDefMD Module;
 
+    public Importer Importer;
+
     public ObfuscationContext(string inputPath)
     {
         Module = ModuleDefMD.Load(inputPath);
+        Importer = new Importer(Module);
     }
 
     public void Save(string outputPath)

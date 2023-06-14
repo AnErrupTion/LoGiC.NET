@@ -14,7 +14,7 @@ public sealed class RenameObfuscation : BaseObfuscation
         context.Module.EncId = Guid.NewGuid();
         context.Module.EncBaseId = Guid.NewGuid();
 
-        context.Module.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+        context.Module.Name = NumberUtils.Random.NextInt64().ToString();
 
         foreach (var type in context.Module.Types)
         {
@@ -23,8 +23,8 @@ public sealed class RenameObfuscation : BaseObfuscation
                     IsSpecialName: false, IsRuntimeSpecialName: false, IsWindowsRuntime: false, IsPublic: false
                 })
             {
-                type.Namespace = NumberUtils.Random.Next().GetHashCode().ToString();
-                type.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+                type.Namespace = NumberUtils.Random.NextInt64().ToString();
+                type.Name = NumberUtils.Random.NextInt64().ToString();
 
                 _renamedTypes++;
             }
@@ -40,7 +40,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                         IsSpecialName: false, IsRuntimeSpecialName: false, IsPublic: false
                     })
                 {
-                    field.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+                    field.Name = NumberUtils.Random.NextInt64().ToString();
 
                     _renamedFields++;
                 }
@@ -57,7 +57,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                         IsSpecialName: false, IsRuntimeSpecialName: false
                     })
                 {
-                    property.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+                    property.Name = NumberUtils.Random.NextInt64().ToString();
 
                     _renamedProperties++;
                 }
@@ -74,7 +74,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                         IsSpecialName: false, IsRuntimeSpecialName: false
                     })
                 {
-                    ev.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+                    ev.Name = NumberUtils.Random.NextInt64().ToString();
 
                     _renamedEvents++;
                 }
@@ -91,7 +91,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                         IsSpecialName: false, IsRuntimeSpecialName: false, IsRuntime: false, IsConstructor: false, IsPublic: false
                     })
                 {
-                    method.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+                    method.Name = NumberUtils.Random.NextInt64().ToString();
 
                     _renamedMethods++;
                 }
@@ -104,7 +104,7 @@ public sealed class RenameObfuscation : BaseObfuscation
                 {
                     if (!parameter.IsHiddenThisParameter)
                     {
-                        parameter.Name = NumberUtils.Random.Next().GetHashCode().ToString();
+                        parameter.Name = NumberUtils.Random.NextInt64().ToString();
 
                         _renamedParameters++;
                     }

@@ -72,7 +72,8 @@ public sealed class InstructionExpansionObfuscation : BaseObfuscation
 
     private void ExpandLdcI4(int value)
     {
-        if (value < 0)
+        // TODO: Find a better solution
+        if (value is < 0 or > 1000)
         {
             _index++;
             return;
