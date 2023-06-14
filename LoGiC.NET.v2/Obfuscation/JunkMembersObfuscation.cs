@@ -99,6 +99,6 @@ public sealed class JunkMembersObfuscation : BaseObfuscation
             }
         }
 
-        Terminal.Info($"Added {_junkMembersAdded} junk members.");
+        Terminal.Info($"Added {_junkMembersAdded} junk members");
     }
 }

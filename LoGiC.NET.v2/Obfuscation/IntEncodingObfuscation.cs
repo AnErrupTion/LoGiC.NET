@@ -67,6 +67,27 @@ public sealed class IntEncodingObfuscation : BaseObfuscation
                             method.Body.Instructions.Insert(i + 1, OpCodes.Ldc_I4.ToInstruction(int.MaxValue));
                             method.Body.Instructions.Insert(i + 2, OpCodes.Call.ToInstruction(minMethod));
                         }
+
+                        var randomValue = NumberUtils.Random.Next();
+
+                        for (;;)
+                        {
+                            try
+                            {
+                                _ = checked(operand + randomValue);
+                                break;
+                            }
+                            catch (OverflowException)
+                            {
+                                randomValue = NumberUtils.Random.Next(randomValue);
+                            }
+                        }
+
+                        var inst = OpCodes.Ldc_I4.ToInstruction(randomValue);
+                        method.Body.Instructions.Insert(i + 1, inst);
+                        method.Body.Instructions.Insert(i + 2, OpCodes.Add.ToInstruction());
+                        method.Body.Instructions.Insert(i + 3, inst);
+                        method.Body.Instructions.Insert(i + 4, OpCodes.Sub.ToInstruction());
                     }
                     else if (instruction.OpCode == OpCodes.Ldc_I8)
                     {
@@ -99,6 +120,27 @@ public sealed class IntEncodingObfuscation : BaseObfuscation
                             method.Body.Instructions.Insert(i + 1, OpCodes.Ldc_I8.ToInstruction(long.MaxValue));
                             method.Body.Instructions.Insert(i + 2, OpCodes.Call.ToInstruction(minLongMethod));
                         }
+
+                        var randomValue = NumberUtils.Random.NextInt64();
+
+                        for (;;)
+                        {
+                            try
+                            {
+                               _ = checked(operand + randomValue);
+                               break;
+                            }
+                            catch (OverflowException)
+                            {
+                                randomValue = NumberUtils.Random.NextInt64(randomValue);
+                            }
+                        }
+
+                        var inst = OpCodes.Ldc_I8.ToInstruction(randomValue);
+                        method.Body.Instructions.Insert(i + 1, inst);
+                        method.Body.Instructions.Insert(i + 2, OpCodes.Add.ToInstruction());
+                        method.Body.Instructions.Insert(i + 3, inst);
+                        method.Body.Instructions.Insert(i + 4, OpCodes.Sub.ToInstruction());
                     }
                 }
 

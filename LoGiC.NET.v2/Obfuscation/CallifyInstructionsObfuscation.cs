@@ -59,7 +59,7 @@ public sealed class CallifyInstructionsObfuscation : BaseObfuscation
                     body.Instructions.Add(instruction);
                     body.Instructions.Add(Instruction.Create(OpCodes.Ret));
 
-                    var newMethod = new MethodDefUser(NumberUtils.Random.NextInt64().ToString().ToString(),
+                    var newMethod = new MethodDefUser(NumberUtils.Random.NextInt64().ToString(),
                         MethodSig.CreateStatic(returnType))
                     {
                         Body = body

@@ -9,11 +9,15 @@ public sealed class InstructionExpansionObfuscation : BaseObfuscation
     public override string Name => "Instruction expansion";
 
     private MethodDef _method;
+    private IMethod? _stringConcatMethod;
     private int _index;
     private uint _expandedInstructions;
 
     public override void Run(ObfuscationContext context)
     {
+        _stringConcatMethod =
+            context.Importer.Import(typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }));
+        
         foreach (var type in context.Module.Types)
         {
             foreach (var method in type.Methods)
@@ -34,12 +38,14 @@ public sealed class InstructionExpansionObfuscation : BaseObfuscation
 
                     foreach (var handler in method.Body.ExceptionHandlers)
                     {
-                        if (handler.HandlerStart == instruction || handler.HandlerEnd == instruction)
+                        if (handler.HandlerStart != instruction && handler.HandlerEnd != instruction)
                         {
-                            Terminal.Warn($"Instruction is the first or last instruction of an exception handler: {instruction}");
-                            skipInstruction = true;
-                            break;
+                            continue;
                         }
+
+                        Terminal.Warn($"Instruction is the first or last instruction of an exception handler: {instruction}");
+                        skipInstruction = true;
+                        break;
                     }
 
                     if (skipInstruction)
@@ -61,13 +67,16 @@ public sealed class InstructionExpansionObfuscation : BaseObfuscation
                         case Code.Ldc_I4_8: ExpandLdcI4(8); break;
                         case Code.Ldc_I4_S:
                         case Code.Ldc_I4: ExpandLdcI4(Convert.ToInt32(instruction.Operand)); break;
+                        case Code.Ldstr: ExpandLdstr(instruction.Operand.ToString()!); break;
                         default: _index++; break;
                     }
                 }
+                
+                method.Body.OptimizeMacros();
             }
         }
 
-        Terminal.Info($"Expanded {_expandedInstructions} instructions.");
+        Terminal.Info($"Expanded {_expandedInstructions} instructions");
     }
 
     private void ExpandLdcI4(int value)
@@ -92,6 +101,23 @@ public sealed class InstructionExpansionObfuscation : BaseObfuscation
 
         _method.Body.Instructions.Insert(_index++, Instruction.CreateLdcI4(numbers[1]));
         _method.Body.Instructions.Insert(_index++, Instruction.Create(OpCodes.Add));
+
+        _expandedInstructions++;
+    }
+
+    private void ExpandLdstr(string value)
+    {
+        var splitIndex = NumberUtils.Random.Next(0, value.Length);
+        var str1 = value[splitIndex..];
+        var str2 = value.Remove(splitIndex);
+
+        var instruction = _method.Body.Instructions[_index];
+        instruction.OpCode = OpCodes.Ldstr;
+        instruction.Operand = str2;
+        _method.Body.Instructions[_index++] = instruction;
+
+        _method.Body.Instructions.Insert(_index++, Instruction.Create(OpCodes.Ldstr, str1));
+        _method.Body.Instructions.Insert(_index++, Instruction.Create(OpCodes.Call, _stringConcatMethod));
 
         _expandedInstructions++;
     }
